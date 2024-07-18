@@ -154,6 +154,11 @@ public class ValidationItemControllerV2 {
     @PostMapping("/add")
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
+        if (bindingResult.hasErrors()) {
+            log.info("errors: {}", bindingResult);
+            return "validation/v2/addForm";
+        }
+
         //검증 로직
         if (!StringUtils.hasText(item.getItemName())) {
             bindingResult.rejectValue("itemName", "required");
@@ -178,6 +183,7 @@ public class ValidationItemControllerV2 {
             log.info("errors: {}", bindingResult);
             return "validation/v2/addForm";
         }
+
 
 
         Item savedItem = itemRepository.save(item);
